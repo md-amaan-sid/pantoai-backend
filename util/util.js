@@ -5,4 +5,4 @@ export function getProviderFromSession(req) {
 }
 
 export const renderBackendApiUrl = "https://gitmanagement-backend.onrender.com";
-export const netlifyFrontendUrl = "https://gitmanagement.netlify.app/";
+export const netlifyFrontendUrl = "https://gitmanagement.netlify.app";
