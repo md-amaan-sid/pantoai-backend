@@ -6,6 +6,7 @@ import session from "express-session";
 
 import authRoutes from "./routes/auth.js";
 import githubRoutes from "./routes/github.js";
+import providerRoutes from "./routes/provider.js";
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(
 // Routes
 app.use("/auth", authRoutes);
 app.use("/github", githubRoutes);
+app.use("/provider", providerRoutes);
 
 app.listen(4000, () => {
   console.log("Backend running on http://localhost:4000");
