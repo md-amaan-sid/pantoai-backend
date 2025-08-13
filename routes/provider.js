@@ -2,7 +2,11 @@
 import express from "express";
 import axios from "axios";
 import dotenv from "dotenv";
-import getProviderFromSession from "../util/util.js";
+import {
+  getProviderFromSession,
+  renderBackendApiUrl,
+  netlifyFrontendUrl,
+} from "../util/util.js";
 
 const router = express.Router();
 dotenv.config();
@@ -33,7 +37,7 @@ router.get("/:provider/login", (req, res) => {
   const provider = PROVIDERS[req.params.provider];
   if (!provider) return res.status(400).send("Invalid provider");
 
-  const redirectUri = `http://localhost:4000${provider.redirectPath}`;
+  const redirectUri = `${renderBackendApiUrl}${provider.redirectPath}`;
   const authUrl =
     `${provider.authUrl}?client_id=${provider.clientId}` +
     `&redirect_uri=${encodeURIComponent(redirectUri)}` +
@@ -72,7 +76,7 @@ router.get("/:provider/callback", async (req, res) => {
           client_secret: provider.clientSecret,
           code,
           grant_type: "authorization_code",
-          redirect_uri: `http://localhost:4000${provider.redirectPath}`,
+          redirect_uri: `${renderBackendApiUrl}${provider.redirectPath}`,
         },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -117,7 +121,7 @@ router.get("/:provider/callback", async (req, res) => {
     console.log(`User`, req.session.provider);
     console.log(`User`, req.session[`${providerName}_user`]);
     console.log(`Access token`, req.session[`${providerName}_token`]);
-    res.redirect(`http://localhost:5173/repos?user=${userData}`);
+    res.redirect(`${netlifyFrontendUrl}/repos?user=${userData}`);
   } catch (err) {
     console.error(
       `${providerName} OAuth Error:`,

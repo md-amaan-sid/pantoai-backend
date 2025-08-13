@@ -7,12 +7,13 @@ import session from "express-session";
 import authRoutes from "./routes/auth.js";
 import githubRoutes from "./routes/github.js";
 import providerRoutes from "./routes/provider.js";
+import { netlifyFrontendUrl } from "./util/util.js";
 
 const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: netlifyFrontendUrl,
     credentials: true,
   })
 );

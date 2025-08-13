@@ -1,5 +1,6 @@
 import express from "express";
 import axios from "axios";
+import { renderBackendApiUrl, netlifyFrontendUrl } from "../util/util.js";
 
 const router = express.Router();
 
@@ -7,7 +8,7 @@ const router = express.Router();
 router.get("/github", (req, res) => {
   console.log("GET /auth/github → Redirecting to GitHub OAuth...");
 
-  const redirect_uri = "http://localhost:4000/auth/github/callback";
+  const redirect_uri = `${renderBackendApiUrl}/auth/github/callback`;
   const client_id = process.env.GITHUB_CLIENT_ID;
 
   console.log("Using client_id:", client_id);
@@ -70,7 +71,7 @@ router.get("/github/callback", async (req, res) => {
     console.log(" Access token received, saving in session...");
     req.session.access_token = access_token;
 
-    res.redirect(`http://localhost:5173/repos?user=${userData}`); // Redirect to frontend
+    res.redirect(`${netlifyFrontendUrl}/repos?user=${userData}`); // Redirect to frontend
   } catch (err) {
     console.error(" OAuth Error:", err.response?.data || err.message);
     res.status(500).send("OAuth Error");
